@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora Científica</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #calculator {
+            width: 300px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        #display {
+            width: 100%;
+            height: 50px;
+            margin-bottom: 10px;
+            text-align: right;
+            font-size: 20px;
+        }
+        #buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+        }
+        button {
+            height: 50px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<div id="calculator">
+        <input type="text" id="display" readonly>
+        <div id="buttons">
+            <!-- Botões de números -->
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendNumber(0)">0</button>
+            <!-- Botões de operações matemáticas -->
+            <button onclick="setOperation('+')">+</button>
+            <button onclick="setOperation('-')">-</button>
+            <button onclick="setOperation('')"></button>
+            <button onclick="setOperation('/')">/</button>
+            <button onclick="calculatePercentage()">%</button>
+            <!-- Botões de funções científicas -->
+            <button onclick="calculateLogarithm()">Log</button>
+            <button onclick="calculateExponential()">Exp</button>
+            <button onclick="calculateSquareRoot()">√</button>
+            <button onclick="calculateFactorial()">!</button>
+            <button onclick="calculateSin()">Sin</button>
+            <button onclick="calculateCos()">Cos</button>
+            <button onclick="calculateTan()">Tan</button>
+            <button onclick="calculateHyperbolicSin()">Sinh</button>
+            <button onclick="calculateHyperbolicCos()">Cosh</button>
+            <button onclick="calculateHyperbolicTan()">Tanh</button>
+            <!-- Botões de ação -->
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="deleteLastChar()">←</button>
+            <button onclick="calculateResult()">=</button>
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById('display');
+        let currentOperand = '';
+        let previousOperand = '';
+        let operation = undefined;
+
+        function appendNumber(number) {
+            if (number === '.' && currentOperand.includes('.')) return;
+            currentOperand = currentOperand.toString() + number.toString();
+            display.value = currentOperand;
+        }
+
+        function setOperation(op) {
+            if (currentOperand === '') return;
+            if (previousOperand !== '') {
+                calculateResult();
+            }
+            operation = op;
+            previousOperand = currentOperand;
+            currentOperand = '';
+        }
+
+        function calculateResult() {
+            let result;
+            const prev = parseFloat(previousOperand);
+            const current = parseFloat(currentOperand);
+            if (isNaN(prev) || isNaN(current)) return;
+            switch (operation) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    result = prev / current;
+                    break;
+                case '%':
+                    result = prev * (current / 100);
+                    break;
+                default:
+                    return;
+            }
+            currentOperand = result;
+            operation = undefined;
+            previousOperand = '';
+            display.value = currentOperand;
+function clearDisplay() {
+            currentOperand = '';
+            previousOperand = '';
+            operation = undefined;
+            display.value = '';
+        }
+
+        function deleteLastChar() {
+            currentOperand = currentOperand.toString().slice(0, -1);
+            display.value = currentOperand;
+        }
+
+        // Funções científicas
+        function calculateLogarithm() {
+            currentOperand = Math.log(currentOperand);
+            display.value = currentOperand;
+        }
+
+        function calculateExponential() {
+            currentOperand = Math.exp(currentOperand);
+            display.value = currentOperand;
+        }
+
+        function calculateSquareRoot() {
+            currentOperand = Math.sqrt(currentOperand);
+            display.value = currentOperand;
+        }
+
+        function calculateFactorial() {
+            currentOperand = factorial(currentOperand);
+            display.value = currentOperand;
+        }
+
+        function calculateSin() {
+            currentOperand = Math.sin(currentOperand * Math.PI / 180);
+            display.value = currentOperand;
+        }
+
+        function calculateCos() {
+            currentOperand = Math.cos(currentOperand * Math.PI / 180);
+            display.value = currentOperand;
+        }
+
+        function calculateTan() {
+            currentOperand = Math.tan(currentOperand * Math.PI / 180);
+            display.value = currentOperand;
+        }
+
+        function calculateHyperbolicSin() {
+            currentOperand = Math.sinh(currentOperand);
+            display.value = currentOperand;
+        }
+
+        function calculateHyperbolicCos() {
+            currentOperand = Math.cosh(currentOperand);
+            display.value = currentOperand;
+        }
+
+        function calculateHyperbolicTan() {
+            currentOperand = Math.tanh(currentOperand);
+            display.value = currentOperand;
+        }
+
+        // Função auxiliar para calcular o fatorial
+        function factorial(n) {
+            if (n === 0) {
+                return 1;
+            }
+            return n * factorial(n - 1);
+        }
+    </script>
+</body>
+</html>
